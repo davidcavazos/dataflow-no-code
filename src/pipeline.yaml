@@ -1,0 +1,45 @@
+src:
+  python:
+    requires:
+      numpy: 1.20.3
+    functions:
+      - hello
+      - multiply
+      - with_args
+
+let:
+  names:
+    - Create:
+        label: Create names
+        elements: ["Apache", "Beam"]
+    - Call:
+        label: Call hello
+        function: hello
+    - Log:
+        label: Log greetings
+
+  numbers:
+    - Create:
+        label: Create numbers
+        elements: [1, 2, 3, 4, 5]
+    - Call:
+        label: Call multiply
+        function: multiply
+        args:
+          n: 5
+    - Log:
+        label: Log numbers
+
+  names_with_numbers:
+    - names
+    - Call:
+        label: With numbers
+        function: with_numbers
+        side_inputs:
+          AsIter:
+            numbers: numbers
+    - FlatMap:
+        label: Flatten
+        function: identity
+    - Log:
+        label: Log names with numbers

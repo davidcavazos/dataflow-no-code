@@ -1,11 +1,10 @@
-# Static file, copy from build stage with cloned repo.
+# Static file.
 
-import os
+import importlib
 import logging
+import os
 
 import flask
-
-import functions
 
 app = flask.Flask(__name__)
 
@@ -16,7 +15,8 @@ def call(function):
     element = request["x"]
     args = request.get("args", {})
     try:
-        f = functions.__dict__[function]
+        module = importlib.import_module(f"functions.{function}")
+        f = module.__dict__[function]
         return {"ok": f(element, **args)}
     except Exception as e:
         logging.error(e, stack_info=True)
