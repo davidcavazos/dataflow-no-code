@@ -9,7 +9,7 @@ COPY python python
 RUN apt-get update \
     && apt-get install -y --no-install-recommends g++ \
     && rm -rf /var/lib/apt/lists/* \
-    # Python server.
+    # Python language server.
     && python -m venv python/env \
     && python/env/bin/pip install --no-cache-dir -r python/requirements.txt \
     # Main Apache Beam pipeline setup.
