@@ -1,0 +1,6 @@
+# Python language server.
+Flask==2.0.1
+gunicorn==20.1.0
+
+# User defined functions.
+numpy==1.20.3

@@ -73,3 +73,39 @@ The Dockerfile would be a [multi-stage build](https://docs.docker.com/develop/de
     1. Copy the `run` script from the pipeline builder stage.
     1. For each language builder stage, copy the packaged language servers.
     1. Set the entry point to the `run` script.
+
+## Generating the pipeline
+
+```sh
+# TODO
+```
+
+## Building the container image
+
+```sh
+export PROJECT=$(gcloud config get-value project)
+export IMAGE="gcr.io/$PROJECT/dataflow-no-code"
+
+gcloud builds submit -t $IMAGE build/
+```
+
+## Running locally
+
+```sh
+docker run --rm -e ENTRYPOINT=python $IMAGE main.py
+```
+
+## Running in Dataflow
+
+```sh
+export BUCKET="your-cloud-storage-bucket"
+export REGION="us-central1"
+
+# TODO: make this into a `gcloud builds submit --config run.yaml` for service account credentials.
+docker run --rm -e ENTRYPOINT=python $IMAGE main.py \
+    --runner "DataflowRunner" \
+    --project "$PROJECT" \
+    --region "$REGION" \
+    --temp_location "gs://$BUCKET/temp" \
+    --sdk_container_image "$IMAGE"
+```

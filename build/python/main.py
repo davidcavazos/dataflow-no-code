@@ -22,10 +22,3 @@ def call(function):
         logging.error(e, stack_info=True)
         return {"error": f"{type(e).__name__}: {e}"}
 
-
-if __name__ == "__main__":
-    app.run(
-        debug=True,
-        host="0.0.0.0",
-        port=int(os.environ.get("PYTHON_SERVER_PORT", 42000)),
-    )
