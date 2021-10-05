@@ -1,0 +1,15 @@
+steps:
+- name: gcr.io/$PROJECT_ID/dataflow-no-code
+  env: [ACTION=run]
+  args:
+  - --runner=DataflowRunner
+  - --project=$PROJECT_ID
+  - --region=us-central1
+  - --sdk_container_image=gcr.io/$PROJECT_ID/dataflow-no-code
+  - --experiment=use_runner_v2
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+
+# Use the Compute Engine default service account to launch the job.
+serviceAccount: projects/$PROJECT_ID/serviceAccounts/$PROJECT_NUMBER-compute@developer.gserviceaccount.com

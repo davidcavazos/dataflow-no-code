@@ -9,27 +9,30 @@ with_numbers = "http://localhost:42000/with_numbers"
 
 
 def run(beam_args):
-    with bm.Pipeline(beam_args) as pipeline:
-        names = (
-            pipeline
-            | "Create names" >> bm.Create(["Apache", "Beam"])
-            | "Call hello" >> bm.Call(hello)
-            | "Log greetings" >> bm.Log()
-        )
+    pipeline = bm.Pipeline(beam_args)
 
-        numbers = (
-            pipeline
-            | "Create numbers" >> bm.Create([1, 2, 3, 4])
-            | "Call multiply" >> bm.Call(multiply, n=5)
-            | "Log numbers" >> bm.Log()
-        )
+    names = (
+        pipeline
+        | "Create names" >> bm.Create(["Apache", "Beam"])
+        | "Call hello" >> bm.Call(hello)
+        | "Log greetings" >> bm.Log()
+    )
 
-        names_with_numbers = (
-            names
-            | "With numbers" >> bm.Call(with_numbers, numbers=bm.AsIter(numbers))
-            | "Flatten" >> bm.FlatMap(bm.identity)
-            | "Log names with numbers" >> bm.Log()
-        )
+    numbers = (
+        pipeline
+        | "Create numbers" >> bm.Create([1, 2, 3, 4])
+        | "Call multiply" >> bm.Call(multiply, n=5)
+        | "Log numbers" >> bm.Log()
+    )
+
+    names_with_numbers = (
+        names
+        | "With numbers" >> bm.Call(with_numbers, numbers=bm.AsIter(numbers))
+        | "Flatten" >> bm.FlatMap(bm.identity)
+        | "Log names with numbers" >> bm.Log()
+    )
+
+    pipeline.run()
 
 
 if __name__ == "__main__":
